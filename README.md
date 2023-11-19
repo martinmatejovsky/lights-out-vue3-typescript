@@ -1,4 +1,4 @@
-# my-vue-app
+# Vue3 uceni
 
 ## Project setup
 ```
