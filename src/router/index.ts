@@ -14,7 +14,9 @@ const routes: Array<RouteRecordRaw> = [
     // this generates a separate chunk (lightsOut.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "lightsOut" */ "../views/LightsOutGame.vue"),
+      import(
+        /* webpackChunkName: "lightsOut" */ "../views/LightsOutGameView.vue"
+      ),
   },
 ];
 
