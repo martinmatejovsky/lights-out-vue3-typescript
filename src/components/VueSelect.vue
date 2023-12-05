@@ -15,12 +15,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-
-// ========= interface
-interface Option {
-  value: number;
-  text: string;
-}
+import { SelectOptions } from "@/utils/interfaces";
 
 // ========= export
 export default defineComponent({
@@ -32,7 +27,7 @@ export default defineComponent({
     },
     options: {
       required: true,
-      type: Object as PropType<Option[]>,
+      type: [] as PropType<SelectOptions[]>,
     },
   },
   data: function () {
