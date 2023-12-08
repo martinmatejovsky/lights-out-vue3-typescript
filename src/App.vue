@@ -27,4 +27,6 @@ nav {
     }
   }
 }
+
+@import "@/styles/main.scss";
 </style>
