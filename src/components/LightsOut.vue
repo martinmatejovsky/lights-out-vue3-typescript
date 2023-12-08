@@ -1,8 +1,21 @@
 <template>
   <div class="c-lightsOut">
-    <p>THE game</p>
-    <VueSelect name="grid" :options="gridOptions" @select="updateGrid" />
-    <VueSelect name="colors" :options="colorsOptions" @select="updateColors" />
+    <p>Select game parameters</p>
+    <div class="lights-out-settings">
+      <VueSelect name="grid" :options="gridOptions" @select="updateGrid"
+        >Size of a field</VueSelect
+      >
+      <VueSelect name="colors" :options="colorsOptions" @select="updateColors"
+        >Number of colors</VueSelect
+      >
+      <button
+        class="lights-out-button-start"
+        :disabled="!colors || !grid"
+        @click="startGame"
+      >
+        Start game
+      </button>
+    </div>
     <p>{{ grid }}</p>
     <p>{{ colors }}</p>
   </div>
@@ -13,6 +26,7 @@ import { defineComponent } from "vue";
 import VueSelect from "@/components/VueSelect.vue";
 import { Range } from "@/utils/classes";
 import { SelectOptions } from "@/utils/interfaces";
+import { gameStates } from "@/utils/constants";
 
 export default defineComponent({
   name: "LightsOut",
@@ -24,6 +38,7 @@ export default defineComponent({
       colors: null as number | null,
       gridOptions: [] as SelectOptions[],
       colorsOptions: [] as SelectOptions[],
+      state: gameStates.new,
     };
   },
   created() {
@@ -31,6 +46,9 @@ export default defineComponent({
     this.generateColorsOptions();
   },
   methods: {
+    startGame(): void {
+      this.state = gameStates.inProgress;
+    },
     updateGrid(value: string): void {
       this.grid = parseInt(value);
     },
