@@ -1,11 +1,15 @@
 <template>
   <div class="c-vue-select">
-    <label :for="`vue-select-${name}`"></label>
-    <select :name="`vue-select-${name}`">
+    <label :for="`vue-select-${name}`" class="vue-select-label">
+      <slot>Choose an option</slot>
+    </label>
+    <select :name="`vue-select-${name}`" class="vue-select-select">
       <option
-        v-for="option in options"
+        v-for="option in optionsSet"
         :key="option.value"
         :value="option.value"
+        :disabled="emptyStartingOption && option.value === ''"
+        :selected="emptyStartingOption && option.value === ''"
       >
         {{ option.text }}
       </option>
@@ -27,12 +31,18 @@ export default defineComponent({
     },
     options: {
       required: true,
-      type: [] as PropType<SelectOptions[]>,
+      type: Array as PropType<SelectOptions[]>,
+    },
+    emptyStartingOption: {
+      required: false,
+      type: Boolean,
+      default: true,
     },
   },
   data: function () {
     return {
-      selectedValue: null as string | null,
+      selectedValue: null as SelectOptions["value"],
+      optionsSet: [] as SelectOptions[],
     };
   },
   computed: {
@@ -42,8 +52,14 @@ export default defineComponent({
   },
   watch: {
     selectedValue: function (newValue) {
-      this.$emit("select", newValue);
+      if (newValue) {
+        this.$emit("select", newValue);
+      }
     },
+  },
+  created() {
+    this.populateOptions();
+    this.selectedValue = this.optionsSet[0].value;
   },
   mounted: function () {
     const select = document.querySelector(
@@ -52,6 +68,16 @@ export default defineComponent({
     select.addEventListener("change", () => {
       this.selectedValue = select.value;
     });
+  },
+  methods: {
+    populateOptions(): void {
+      if (this.emptyStartingOption) {
+        this.optionsSet.push({ value: "", text: "Choose" });
+      }
+      this.options.forEach((option) => {
+        this.optionsSet.push(option);
+      });
+    },
   },
 });
 </script>
