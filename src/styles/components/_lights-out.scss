@@ -1,1 +1,19 @@
-.c-lightsOut {}
+$lights-out-cell-size: 50px;
+
+.c-lights-out {
+  .lights-out-grid {
+    display: inline-block;
+    margin: 0 auto;
+  }
+
+  .lights-out-row {
+    display: flex;
+  }
+
+  .lights-out-cell {
+    display: inline-block;
+    width: $lights-out-cell-size;
+    height: $lights-out-cell-size;
+    background-color: #555
+  }
+}

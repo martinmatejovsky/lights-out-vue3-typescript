@@ -7,7 +7,7 @@ export class Range {
   }
 
   generateRandom(): number {
-    return Math.floor(Math.random() * (this.max - this.min) + this.min);
+    return Math.floor(Math.random() * (this.max + 1 - this.min) + this.min);
   }
 
   constructor(min: number, max: number) {
