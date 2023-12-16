@@ -1,5 +1,6 @@
 $lights-out-cell-size: 60px;
 $lights-out-cell-gap: 8px;
+$max-color-range: 4; // TODO: max range should be connected to max range in LightsOutGameView.vue
 
 .c-lights-out {
   display: flex;
@@ -18,10 +19,22 @@ $lights-out-cell-gap: 8px;
   }
 
   .lights-out-cell {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: $lights-out-cell-size;
     height: $lights-out-cell-size;
     background-color: #555; // todo: must come from Vue component
     cursor: pointer;
+
+    @for $i from 1 through $max-color-range {
+      &.is-cell-color-#{$i} {
+        $color-value: round(255 - (255 / $max-color-range * $i));
+        $hex-color: rgb($color-value, $color-value, $color-value);
+        background-color: $hex-color;
+      }
+    }
   }
+
+  .lights-out-cell-mark {}
 }

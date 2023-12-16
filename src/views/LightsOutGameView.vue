@@ -14,8 +14,6 @@
         >Start game</VueButton
       >
     </div>
-    <p>{{ grid }}</p>
-    <p>{{ colors }}</p>
     <LightsOut />
   </div>
 </template>
@@ -71,10 +69,10 @@ export default defineComponent({
       }
     },
     updateGrid(value: number): void {
-      this.grid = value;
+      this.grid = Number(value);
     },
     updateColors(value: number): void {
-      this.colors = value;
+      this.colors = Number(value);
     },
     startGame(): void {
       this.state = gameStates.inProgress;
