@@ -1,2 +1,3 @@
 - switching colors of squares to grayscale or color
 - adding a timer
+- button :one step back
