@@ -1,19 +1,27 @@
-$lights-out-cell-size: 50px;
+$lights-out-cell-size: 60px;
+$lights-out-cell-gap: 8px;
 
 .c-lights-out {
+  display: flex;
+  justify-content: center;
+
   .lights-out-grid {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    row-gap: $lights-out-cell-gap;
     margin: 0 auto;
   }
 
   .lights-out-row {
     display: flex;
+    column-gap: $lights-out-cell-gap;
   }
 
   .lights-out-cell {
     display: inline-block;
     width: $lights-out-cell-size;
     height: $lights-out-cell-size;
-    background-color: #555
+    background-color: #555; // todo: must come from Vue component
+    cursor: pointer;
   }
 }
