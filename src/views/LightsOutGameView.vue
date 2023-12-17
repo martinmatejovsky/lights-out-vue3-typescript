@@ -1,9 +1,9 @@
 <template>
-  <div class="home">
+  <div class="game-view">
     <h1>Lights out</h1>
     <h2>Select game parameters</h2>
 
-    <div class="lights-out-settings">
+    <div class="game-view-settings">
       <VueSelect name="grid" :options="gridOptions" @select="updateGrid"
         >Size of a field</VueSelect
       >
@@ -14,7 +14,9 @@
         >Start game</VueButton
       >
     </div>
-    <LightsOut />
+    <div class="game-view-game-container">
+      <LightsOut />
+    </div>
   </div>
 </template>
 

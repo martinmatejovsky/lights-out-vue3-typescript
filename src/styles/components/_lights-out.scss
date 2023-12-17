@@ -1,14 +1,18 @@
 $lights-out-cell-size: 60px;
 $lights-out-cell-gap: 8px;
-$max-color-range: 4; // TODO: max range should be connected to max range in LightsOutGameView.vue
+$lights-out-max-color-range: 4; // TODO: max range should be connected to max range in LightsOutGameView.vue
+$lights-out-marker-box-shadow: 0 0 10px 8px rgba(255,255,255,0.5);
 
 .c-lights-out {
   display: flex;
   justify-content: center;
+  max-width: 600px;
+  margin: 0 auto;
 
   .lights-out-grid {
     display: flex;
     flex-direction: column;
+    flex-basis: 100%;
     row-gap: $lights-out-cell-gap;
     margin: 0 auto;
   }
@@ -20,21 +24,27 @@ $max-color-range: 4; // TODO: max range should be connected to max range in Ligh
 
   .lights-out-cell {
     display: flex;
+    flex-grow: 1;
     justify-content: center;
     align-items: center;
-    width: $lights-out-cell-size;
-    height: $lights-out-cell-size;
-    background-color: #555; // todo: must come from Vue component
+    row-gap: $lights-out-cell-gap;
+    aspect-ratio: 1/1;
     cursor: pointer;
 
-    @for $i from 1 through $max-color-range {
+    @for $i from 1 through $lights-out-max-color-range {
       &.is-cell-color-#{$i} {
-        $color-value: round(255 - (255 / $max-color-range * $i));
+        $color-value: round(255 - (255 / $lights-out-max-color-range * $i));
         $hex-color: rgb($color-value, $color-value, $color-value);
         background-color: $hex-color;
       }
     }
   }
 
-  .lights-out-cell-mark {}
+  .lights-out-cell-mark {
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    -webkit-box-shadow: $lights-out-marker-box-shadow;
+    -moz-box-shadow: $lights-out-marker-box-shadow;
+    box-shadow: $lights-out-marker-box-shadow;
+  }
 }
