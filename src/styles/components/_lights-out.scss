@@ -30,14 +30,6 @@ $lights-out-marker-box-shadow: 0 0 10px 8px rgba(255,255,255,0.5);
     row-gap: $lights-out-cell-gap;
     aspect-ratio: 1/1;
     cursor: pointer;
-
-    @for $i from 1 through $lights-out-max-color-range {
-      &.is-cell-color-#{$i} {
-        $color-value: round(255 - (255 / $lights-out-max-color-range * $i));
-        $hex-color: rgb($color-value, $color-value, $color-value);
-        background-color: $hex-color;
-      }
-    }
   }
 
   .lights-out-cell-mark {
@@ -46,5 +38,26 @@ $lights-out-marker-box-shadow: 0 0 10px 8px rgba(255,255,255,0.5);
     -webkit-box-shadow: $lights-out-marker-box-shadow;
     -moz-box-shadow: $lights-out-marker-box-shadow;
     box-shadow: $lights-out-marker-box-shadow;
+  }
+
+  // COLOR RANGES
+  // TODO: does exist a solution to use Vue props to generate this?
+  //  Could not find ny solution what so ever. Problem is that scss is compiled before component is rendered.
+  &.is-greyscale-2 {
+    .lights-out-cell {
+      @include greyscale-range(2);
+    }
+  }
+
+  &.is-greyscale-3 {
+    .lights-out-cell {
+      @include greyscale-range(3);
+    }
+  }
+
+  &.is-greyscale-4 {
+    .lights-out-cell {
+      @include greyscale-range(4);
+    }
   }
 }

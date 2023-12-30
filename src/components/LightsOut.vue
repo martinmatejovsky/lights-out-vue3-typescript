@@ -1,5 +1,5 @@
 <template>
-  <div class="c-lights-out">
+  <div :class="['c-lights-out', 'is-greyscale-' + colors]">
     <div class="lights-out-grid">
       <div
         class="lights-out-row"
@@ -63,8 +63,11 @@ export default defineComponent({
           neighborCell >= 0 &&
           neighborCell < this.gameGrid[neighborRow].length
         ) {
-          this.gameGrid[neighborRow][neighborCell] =
-            (this.gameGrid[neighborRow][neighborCell] + 1) % this.colors;
+          if (this.gameGrid[neighborRow][neighborCell] === this.colors) {
+            this.gameGrid[neighborRow][neighborCell] = 1;
+          } else {
+            this.gameGrid[neighborRow][neighborCell] += 1;
+          }
         }
       }
     },
