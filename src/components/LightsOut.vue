@@ -45,6 +45,10 @@ export default defineComponent({
   },
   created() {
     this.createGridObject();
+    // prevent generating a grid that is already won
+    while (this.evaluateWinCondition()) {
+      this.createGridObject();
+    }
   },
   methods: {
     toggleCell(row: number, cell: number): void {
@@ -70,6 +74,13 @@ export default defineComponent({
           }
         }
       }
+
+      if (this.evaluateWinCondition()) {
+        this.emitWin();
+      }
+    },
+    emitWin(): void {
+      this.$emit("lightsOutWin");
     },
     createGridObject(): void {
       this.gameGrid = [];
@@ -83,6 +94,19 @@ export default defineComponent({
 
         this.gameGrid.push(row);
       }
+    },
+    evaluateWinCondition(): boolean {
+      let firstCellValue = this.gameGrid[0][0];
+
+      for (const gridRow of this.gameGrid) {
+        for (const gridCell of gridRow) {
+          if (gridCell !== firstCellValue) {
+            return false;
+          }
+        }
+      }
+
+      return true;
     },
   },
 });

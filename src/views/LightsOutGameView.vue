@@ -15,7 +15,7 @@
       >
     </div>
     <div class="game-view-game-container">
-      <LightsOut />
+      <LightsOut @lightsOutWin="setGameStateWin" />
     </div>
   </div>
 </template>
@@ -50,6 +50,9 @@ export default defineComponent({
     this.generateColorsOptions();
   },
   methods: {
+    setGameStateWin(): void {
+      this.state = gameStates.won;
+    },
     generateOptionsProps(): void {
       const gridOptionsRange = new Range(3, 10);
       for (
