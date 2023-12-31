@@ -25,7 +25,7 @@ import { defineComponent } from "vue";
 import LightsOut from "../components/LightsOut.vue";
 import VueButton from "@/components/VueButton.vue";
 import VueSelect from "@/components/VueSelect.vue";
-import { SelectOptions } from "@/utils/interfaces";
+import { SelectOptions } from "@/utils/types";
 import { gameStates } from "@/utils/constants";
 import { Range } from "@/utils/classes";
 

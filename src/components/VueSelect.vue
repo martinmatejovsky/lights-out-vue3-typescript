@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { SelectOptions } from "@/utils/interfaces";
+import { SelectOptions } from "@/utils/types";
 
 // ========= export
 export default defineComponent({
