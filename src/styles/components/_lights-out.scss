@@ -1,7 +1,8 @@
 $lights-out-cell-size: 60px;
 $lights-out-cell-gap: 8px;
 $lights-out-max-color-range: 4; // TODO: max range should be connected to max range in LightsOutGameView.vue
-$lights-out-marker-box-shadow: 0 0 10px 8px rgba(255,255,255,0.5);
+$lights-out-marker-box-shadow: 0 0 22px 20px rgba(255,255,255,0.5);
+$lights-out-cell-box-shadow: 0px 0px 2px #444, 2px 2px 10px #22222259, inset 3px 3px 10px #8d8d8d, inset -3px -3px 10px #222;
 
 .c-lights-out {
   display: flex;
@@ -29,7 +30,11 @@ $lights-out-marker-box-shadow: 0 0 10px 8px rgba(255,255,255,0.5);
     align-items: center;
     row-gap: $lights-out-cell-gap;
     aspect-ratio: 1/1;
+    border: none;
+    border-radius: 10px;
+    box-shadow: $lights-out-cell-box-shadow;
     cursor: pointer;
+    transition: all 0.1s ease-in-out;
   }
 
   .lights-out-cell-mark {
@@ -38,6 +43,7 @@ $lights-out-marker-box-shadow: 0 0 10px 8px rgba(255,255,255,0.5);
     -webkit-box-shadow: $lights-out-marker-box-shadow;
     -moz-box-shadow: $lights-out-marker-box-shadow;
     box-shadow: $lights-out-marker-box-shadow;
+    font-size: $font-size-medium;
   }
 
   // COLOR RANGES
@@ -58,6 +64,16 @@ $lights-out-marker-box-shadow: 0 0 10px 8px rgba(255,255,255,0.5);
   &.is-greyscale-4 {
     .lights-out-cell {
       @include greyscale-range(4);
+    }
+  }
+}
+
+// BREAKPOINTS
+// =============================================================================
+@media (min-width: 760px) {
+  .c-lights-out {
+    .lights-out-cell-mark {
+      font-size: $font-size-large;
     }
   }
 }
