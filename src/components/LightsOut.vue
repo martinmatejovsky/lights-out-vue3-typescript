@@ -4,11 +4,11 @@
       <div
         class="lights-out-row"
         v-for="(gridRow, gridIndex) in gameGrid"
-        :key="'row' + gridRow"
+        :key="'row' + gridIndex"
       >
         <div
           v-for="(gridCell, cellIndex) in gridRow"
-          :key="'cell' + gridCell"
+          :key="'cell' + cellIndex"
           :class="['lights-out-cell', 'is-cell-color-' + gridCell]"
           @click="toggleCell(gridIndex, cellIndex)"
         >
