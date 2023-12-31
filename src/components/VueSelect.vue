@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref, computed, onMounted } from "vue";
 import { SelectOptions } from "@/utils/types";
 
 // ========= export
@@ -43,44 +43,44 @@ export default defineComponent({
       default: true,
     },
   },
-  data: function () {
-    return {
-      selectedValue: null as SelectOptions["value"],
-      optionsSet: [] as SelectOptions[],
+  setup(props) {
+    const selectedValue = ref<SelectOptions["value"]>(null);
+    const optionsSet = ref<SelectOptions[]>([]);
+
+    const populateOptions = (): void => {
+      if (props.emptyStartingOption) {
+        optionsSet.value.push({ value: "", text: "Choose" });
+      }
+      props.options.forEach((option) => {
+        optionsSet.value.push(option);
+      });
     };
-  },
-  computed: {
-    selectId(): string {
-      return `vue-select-${this.name}`;
-    },
+
+    const selectId = computed(() => {
+      return `vue-select-${props.name}`;
+    });
+
+    const initializeSelect = (): void => {
+      selectedValue.value = optionsSet.value[0].value;
+      const select = document.querySelector(
+        `select[name="${selectId.value}"]`
+      ) as HTMLSelectElement;
+      select.addEventListener("change", () => {
+        selectedValue.value = select.value;
+      });
+    };
+
+    onMounted(() => {
+      populateOptions();
+      initializeSelect();
+    });
+    return { selectedValue, optionsSet, populateOptions };
   },
   watch: {
     selectedValue: function (newValue) {
       if (newValue) {
         this.$emit("select", newValue);
       }
-    },
-  },
-  created() {
-    this.populateOptions();
-    this.selectedValue = this.optionsSet[0].value;
-  },
-  mounted: function () {
-    const select = document.querySelector(
-      `select[name="${this.selectId}"]`
-    ) as HTMLSelectElement;
-    select.addEventListener("change", () => {
-      this.selectedValue = select.value;
-    });
-  },
-  methods: {
-    populateOptions(): void {
-      if (this.emptyStartingOption) {
-        this.optionsSet.push({ value: "", text: "Choose" });
-      }
-      this.options.forEach((option) => {
-        this.optionsSet.push(option);
-      });
     },
   },
 });
