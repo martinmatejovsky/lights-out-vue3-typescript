@@ -10,7 +10,7 @@
           v-for="(gridCell, cellIndex) in gridRow"
           :key="'cell' + cellIndex"
           :class="['lights-out-cell', 'is-cell-color-' + gridCell]"
-          @click="toggleCell(gridIndex, cellIndex)"
+          @click="cellClick(gridIndex, cellIndex)"
         >
           <div class="lights-out-cell-mark">{{ gridCell }}</div>
         </div>
@@ -45,12 +45,37 @@ export default defineComponent({
   },
   created() {
     this.createGridObject();
+    this.shuffleGrid();
     // prevent generating a grid that is already won
     while (this.evaluateWinCondition()) {
-      this.createGridObject();
+      this.shuffleGrid();
     }
   },
   methods: {
+    cellClick(row: number, cell: number): void {
+      this.toggleCell(row, cell);
+      if (this.evaluateWinCondition()) {
+        this.emitWin();
+      }
+    },
+    /**
+     * @name shuffleGrid
+     * @description Used to shuffle the grid. Must be done by simulating clicks on random cells so that
+     * the puzzle has guaranteed a solution.
+     *
+     */
+    shuffleGrid(): void {
+      // the larger the grid, the more random clicks are used to shuffle the grid
+      const amountOfRandomClicks = this.gameGrid.length * this.gameGrid.length;
+      for (let i = 0; i < amountOfRandomClicks; i++) {
+        const randomRow = Math.floor(Math.random() * this.gameGrid.length);
+        const randomCell = Math.floor(
+          Math.random() * this.gameGrid[randomRow].length
+        );
+
+        this.toggleCell(randomRow, randomCell);
+      }
+    },
     toggleCell(row: number, cell: number): void {
       const neighborsCross = [
         [row - 1, cell],
@@ -74,14 +99,16 @@ export default defineComponent({
           }
         }
       }
-
-      if (this.evaluateWinCondition()) {
-        this.emitWin();
-      }
     },
     emitWin(): void {
       this.$emit("lightsOutWin");
     },
+    /**
+     * @name createGridObject
+     * @description Creates a grid object. Initially all cells are set to 1.
+     * This serves as a solution to the fact that not all random color setups are solvable.
+     * After setting up the grid to solved constellation, the grid can be shuffled.
+     */
     createGridObject(): void {
       this.gameGrid = [];
 
@@ -89,7 +116,7 @@ export default defineComponent({
         const row = [];
 
         for (let j = 0; j < this.grid; j++) {
-          row[j] = this.colorRange.generateRandom();
+          row[j] = 1;
         }
 
         this.gameGrid.push(row);
