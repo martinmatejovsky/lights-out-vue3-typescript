@@ -27,14 +27,12 @@ export default defineComponent({
   name: "LightsOut",
   props: {
     grid: {
-      required: false,
+      required: true,
       type: Number,
-      default: 2, // TODO - no defaults
     },
     colors: {
-      required: false,
+      required: true,
       type: Number,
-      default: 2, // TODO - no defaults
     },
   },
   data: function () {

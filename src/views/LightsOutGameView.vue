@@ -1,9 +1,9 @@
 <template>
   <div class="game-view">
     <h1>Lights out</h1>
-    <h2>Select game parameters</h2>
 
-    <div class="game-view-settings">
+    <div v-if="state === gameStates.new" class="game-view-settings">
+      <h2>Select game parameters</h2>
       <VueSelect name="grid" :options="gridOptions" @select="updateGrid"
         >Size of a field</VueSelect
       >
@@ -14,7 +14,7 @@
         >Start game</VueButton
       >
     </div>
-    <div class="game-view-game-container">
+    <div v-if="state !== gameStates.new" class="game-view-game-container">
       <transition name="fade">
         <div v-if="state === gameStates.won" class="game-view-victory">
           <h2>Congratulations!</h2>
@@ -22,7 +22,11 @@
           <VueButton type="button" @click="clearGame">Play again</VueButton>
         </div>
       </transition>
-      <LightsOut @lightsOutWin="setGameStateWin" />
+      <LightsOut
+        :grid="grid"
+        :colors="colors"
+        @lightsOutWin="setGameStateWin"
+      />
     </div>
   </div>
 </template>
@@ -63,6 +67,8 @@ export default defineComponent({
   },
   methods: {
     clearGame(): void {
+      this.grid = null;
+      this.colors = null;
       this.state = gameStates.new;
     },
     setGameStateWin(): void {

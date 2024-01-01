@@ -1,6 +1,9 @@
 <template>
   <div class="c-vue-button">
-    <button :class="['vue-button-button', componentClasses]">
+    <button
+      :class="['vue-button-button', componentClasses]"
+      :disabled="disabled"
+    >
       <slot></slot>
     </button>
   </div>
@@ -16,6 +19,11 @@ export default defineComponent({
       required: false,
       type: String,
       default: "button",
+    },
+    disabled: {
+      required: false,
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
