@@ -4,6 +4,32 @@
   .game-view-settings {}
 
   .game-view-game-container {
+    position: relative;
     padding: 60px 0;
   }
+
+  .game-view-victory {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba($color-background-default, 0.6);
+    color: $color-txt-inverted;
+  }
+}
+
+// TRANSITIONS
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }

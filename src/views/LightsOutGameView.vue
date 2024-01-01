@@ -15,6 +15,13 @@
       >
     </div>
     <div class="game-view-game-container">
+      <transition name="fade">
+        <div v-if="state === gameStates.won" class="game-view-victory">
+          <h2>Congratulations!</h2>
+          <p>You won the game.</p>
+          <VueButton type="button" @click="clearGame">Play again</VueButton>
+        </div>
+      </transition>
       <LightsOut @lightsOutWin="setGameStateWin" />
     </div>
   </div>
@@ -31,6 +38,11 @@ import { Range } from "@/utils/classes";
 
 export default defineComponent({
   name: "LightsOutView",
+  computed: {
+    gameStates() {
+      return gameStates;
+    },
+  },
   components: {
     VueSelect,
     VueButton,
@@ -50,6 +62,9 @@ export default defineComponent({
     this.generateColorsOptions();
   },
   methods: {
+    clearGame(): void {
+      this.state = gameStates.new;
+    },
     setGameStateWin(): void {
       this.state = gameStates.won;
     },

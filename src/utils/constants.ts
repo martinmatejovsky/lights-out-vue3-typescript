@@ -10,5 +10,4 @@ export enum gameStates {
   new,
   inProgress,
   won,
-  lost,
 }

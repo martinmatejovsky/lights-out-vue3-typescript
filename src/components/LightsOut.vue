@@ -29,12 +29,12 @@ export default defineComponent({
     grid: {
       required: false,
       type: Number,
-      default: 4, // TODO - no defaults
+      default: 2, // TODO - no defaults
     },
     colors: {
       required: false,
       type: Number,
-      default: 3, // TODO - no defaults
+      default: 2, // TODO - no defaults
     },
   },
   data: function () {

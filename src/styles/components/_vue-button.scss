@@ -1,6 +1,6 @@
 .c-vue-button {
   .vue-button-button {
-    padding: 6px 12px;
+    padding: 10px 18px;
     border: 0 none;
     border-radius: 4px;
     font-size: $font-size-small;
@@ -8,13 +8,13 @@
     cursor: pointer;
 
     &.is-button {
-      background-color: #c3f8df;
-      color: #000;
+      background-color: $color-button-background-default;
+      color: $color-txt-default;
     }
 
     &.is-submit {
-      background-color: #42b983;
-      color: #fff;
+      background-color: $color-button-background-submit;
+      color: $color-txt-inverted;
     }
   }
 }
