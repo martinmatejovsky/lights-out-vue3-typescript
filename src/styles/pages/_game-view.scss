@@ -18,18 +18,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: rgba($color-background-default, 0.6);
+    background-color: rgba($color-background-default, 0.8);
     color: $color-txt-inverted;
   }
-}
-
-// TRANSITIONS
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
 }

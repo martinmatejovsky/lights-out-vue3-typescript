@@ -1,6 +1,6 @@
 html {
   background: $color-background-inverted;
-  background: radial-gradient(circle, $color-background-inverted 0%, rgba($color-background-default, 52%) 100%)
+  animation: pulse 10s infinite;
 }
 
 body {

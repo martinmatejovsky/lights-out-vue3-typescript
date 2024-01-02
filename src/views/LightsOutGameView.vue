@@ -2,32 +2,39 @@
   <div class="game-view">
     <h1>Lights out</h1>
 
-    <div v-if="state === gameStates.new" class="game-view-settings">
-      <h2>Select game parameters</h2>
-      <VueSelect name="grid" :options="gridOptions" @select="updateGrid"
-        >Size of a field</VueSelect
+    <transition name="fade" mode="out-in">
+      <div
+        v-if="state === gameStates.new"
+        key="settings"
+        class="game-view-settings"
       >
-      <VueSelect name="colors" :options="colorsOptions" @select="updateColors"
-        >Number of colors</VueSelect
-      >
-      <VueButton type="submit" :disabled="!colors || !grid" @click="startGame"
-        >Start game</VueButton
-      >
-    </div>
-    <div v-if="state !== gameStates.new" class="game-view-game-container">
-      <transition name="fade">
-        <div v-if="state === gameStates.won" class="game-view-victory">
-          <h2>Congratulations!</h2>
-          <p>You won the game.</p>
-          <VueButton type="button" @click="clearGame">Play again</VueButton>
-        </div>
-      </transition>
-      <LightsOut
-        :grid="grid"
-        :colors="colors"
-        @lightsOutWin="setGameStateWin"
-      />
-    </div>
+        <h2>Select game parameters</h2>
+        <VueSelect name="grid" :options="gridOptions" @select="updateGrid"
+          >Size of a field</VueSelect
+        >
+        <VueSelect name="colors" :options="colorsOptions" @select="updateColors"
+          >Number of colors</VueSelect
+        >
+        <VueButton type="submit" :disabled="!colors || !grid" @click="startGame"
+          >Start game</VueButton
+        >
+      </div>
+
+      <div v-else key="game" class="game-view-game-container">
+        <transition name="fade">
+          <div v-if="state === gameStates.won" class="game-view-victory">
+            <h2>Congratulations!</h2>
+            <p>You won the game.</p>
+            <VueButton type="button" @click="clearGame">Play again</VueButton>
+          </div>
+        </transition>
+        <LightsOut
+          :grid="grid"
+          :colors="colors"
+          @lightsOutWin="setGameStateWin"
+        />
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -66,6 +73,9 @@ export default defineComponent({
     this.generateColorsOptions();
   },
   methods: {
+    showSettings(): void {
+      this.state = gameStates.new;
+    },
     clearGame(): void {
       this.grid = null;
       this.colors = null;
