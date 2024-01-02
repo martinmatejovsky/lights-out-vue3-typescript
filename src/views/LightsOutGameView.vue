@@ -28,7 +28,7 @@
         <transition name="fade">
           <div v-if="state === gameStates.won" class="game-view-victory">
             <h2>Congratulations!</h2>
-            <p>You won the game.</p>
+            <p>You won the game in {{ timeInMinutesAndSeconds }}.</p>
             <VueButton type="button" @click="clearGame">Play again</VueButton>
           </div>
         </transition>
@@ -54,6 +54,12 @@ import { Range } from "@/utils/classes";
 export default defineComponent({
   name: "LightsOutView",
   computed: {
+    timeInMinutesAndSeconds(): string {
+      const minutes = Math.floor(this.gameTime / 60);
+      const seconds = (this.gameTime % 60).toString().padStart(2, "0");
+
+      return `${minutes}:${seconds}`;
+    },
     gameStates() {
       return gameStates;
     },
@@ -70,15 +76,30 @@ export default defineComponent({
       gridOptions: [] as SelectOptions[],
       colorsOptions: [] as SelectOptions[],
       state: gameStates.new,
+      timer: null as unknown as number,
+      gameTime: 0 as number,
     };
   },
   created() {
     this.generateOptionsProps();
     this.generateColorsOptions();
   },
+  watch: {
+    state(newValue: gameStates) {
+      if (newValue === gameStates.inProgress) {
+        this.startTimer();
+      } else if (newValue === gameStates.new) {
+        this.gameTime = 0;
+      } else if (newValue === gameStates.won) {
+        clearInterval(this.timer);
+      }
+    },
+  },
   methods: {
-    showSettings(): void {
-      this.state = gameStates.new;
+    startTimer(): void {
+      this.timer = setInterval(() => {
+        this.gameTime++;
+      }, 1000);
     },
     clearGame(): void {
       this.grid = null;
