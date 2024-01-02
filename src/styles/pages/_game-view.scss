@@ -1,7 +1,9 @@
 .game-view {
   user-select: none;
 
-  .game-view-settings {}
+  .game-view-settings {
+    padding: 20px 0;
+  }
 
   .game-view-game-container {
     position: relative;
@@ -20,5 +22,15 @@
     left: 0;
     background-color: rgba($color-background-default, 0.8);
     color: $color-txt-inverted;
+  }
+}
+
+// BREAKPOINTS
+// =============================================================================
+@media (min-width: 760px) {
+  .game-view {
+    .game-view-settings {
+      padding: 40px 0;
+    }
   }
 }
