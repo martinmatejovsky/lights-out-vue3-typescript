@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
 import { Range } from "@/utils/classes";
 
 export default defineComponent({
@@ -35,46 +35,50 @@ export default defineComponent({
       type: Number,
     },
   },
-  data: function () {
-    return {
-      gameGrid: [] as number[][],
-      colorRange: new Range(1, this.colors),
-    };
-  },
-  created() {
-    this.createGridObject();
-    this.shuffleGrid();
-    // prevent generating a grid that is already won
-    while (this.evaluateWinCondition()) {
-      this.shuffleGrid();
-    }
-  },
-  methods: {
-    cellClick(row: number, cell: number): void {
-      this.toggleCell(row, cell);
-      if (this.evaluateWinCondition()) {
-        this.emitWin();
+  setup(props, context) {
+    const gameGrid = ref<number[][]>([]);
+    const colorRange = ref(new Range(1, props.colors));
+
+    /**
+     * @name createGridObject
+     * @description Creates a grid object. Initially all cells are set to 1.
+     * This serves as a solution to the fact that not all random color setups are solvable.
+     * After setting up the grid to solved constellation, the grid can be shuffled.
+     */
+    const createGridObject = (): void => {
+      gameGrid.value = [];
+
+      for (let i = 0; i < props.grid; i++) {
+        const row = [];
+
+        for (let j = 0; j < props.grid; j++) {
+          row[j] = 1;
+        }
+
+        gameGrid.value.push(row);
       }
-    },
+    };
     /**
      * @name shuffleGrid
      * @description Used to shuffle the grid. Must be done by simulating clicks on random cells so that
      * the puzzle has guaranteed a solution.
      *
      */
-    shuffleGrid(): void {
-      // the larger the grid, the more random clicks are used to shuffle the grid
-      const amountOfRandomClicks = this.gameGrid.length * this.gameGrid.length;
+    const shuffleGrid = (): void => {
+      // The larger the grid, the more random clicks are used to shuffle the grid.
+      const amountOfRandomClicks =
+        gameGrid.value.length * gameGrid.value.length;
       for (let i = 0; i < amountOfRandomClicks; i++) {
-        const randomRow = Math.floor(Math.random() * this.gameGrid.length);
+        const randomRow = Math.floor(Math.random() * gameGrid.value.length);
         const randomCell = Math.floor(
-          Math.random() * this.gameGrid[randomRow].length
+          Math.random() * gameGrid.value[randomRow].length
         );
 
-        this.toggleCell(randomRow, randomCell);
+        toggleCell(randomRow, randomCell);
       }
-    },
-    toggleCell(row: number, cell: number): void {
+    };
+
+    const toggleCell = (row: number, cell: number): void => {
       const neighborsCross = [
         [row - 1, cell],
         [row + 1, cell],
@@ -86,44 +90,23 @@ export default defineComponent({
       for (const [neighborRow, neighborCell] of neighborsCross) {
         if (
           neighborRow >= 0 &&
-          neighborRow < this.gameGrid.length &&
+          neighborRow < gameGrid.value.length &&
           neighborCell >= 0 &&
-          neighborCell < this.gameGrid[neighborRow].length
+          neighborCell < gameGrid.value[neighborRow].length
         ) {
-          if (this.gameGrid[neighborRow][neighborCell] === this.colors) {
-            this.gameGrid[neighborRow][neighborCell] = 1;
+          if (gameGrid.value[neighborRow][neighborCell] === props.colors) {
+            gameGrid.value[neighborRow][neighborCell] = 1;
           } else {
-            this.gameGrid[neighborRow][neighborCell] += 1;
+            gameGrid.value[neighborRow][neighborCell] += 1;
           }
         }
       }
-    },
-    emitWin(): void {
-      this.$emit("lightsOutWin");
-    },
-    /**
-     * @name createGridObject
-     * @description Creates a grid object. Initially all cells are set to 1.
-     * This serves as a solution to the fact that not all random color setups are solvable.
-     * After setting up the grid to solved constellation, the grid can be shuffled.
-     */
-    createGridObject(): void {
-      this.gameGrid = [];
+    };
 
-      for (let i = 0; i < this.grid; i++) {
-        const row = [];
+    const evaluateWinCondition = (): boolean => {
+      let firstCellValue = gameGrid.value[0][0];
 
-        for (let j = 0; j < this.grid; j++) {
-          row[j] = 1;
-        }
-
-        this.gameGrid.push(row);
-      }
-    },
-    evaluateWinCondition(): boolean {
-      let firstCellValue = this.gameGrid[0][0];
-
-      for (const gridRow of this.gameGrid) {
+      for (const gridRow of gameGrid.value) {
         for (const gridCell of gridRow) {
           if (gridCell !== firstCellValue) {
             return false;
@@ -132,7 +115,27 @@ export default defineComponent({
       }
 
       return true;
-    },
+    };
+    const cellClick = (row: number, cell: number): void => {
+      toggleCell(row, cell);
+      if (evaluateWinCondition()) {
+        emitWin();
+      }
+    };
+    const emitWin = (): void => {
+      context.emit("lightsOutWin");
+    };
+
+    onMounted(() => {
+      createGridObject();
+      shuffleGrid();
+      // prevent generating a grid that is already won
+      while (evaluateWinCondition()) {
+        shuffleGrid();
+      }
+    });
+
+    return { gameGrid, colorRange, cellClick };
   },
 });
 </script>
