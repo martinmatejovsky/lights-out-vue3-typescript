@@ -11,13 +11,17 @@
       opacity: 0.5;
       cursor: not-allowed;
     }
+  }
 
-    &.is-button {
+  &.is-button {
+    .vue-button-button {
       background-color: $color-button-background-default;
       color: $color-txt-default;
     }
+  }
 
-    &.is-submit {
+  &.is-submit {
+    .vue-button-button {
       background-color: $color-button-background-submit;
       color: $color-txt-inverted;
     }

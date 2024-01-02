@@ -1,8 +1,9 @@
 <template>
-  <div class="c-vue-button">
+  <div :class="['c-vue-button', componentClasses]">
     <button
-      :class="['vue-button-button', componentClasses]"
+      class="vue-button-button"
       :disabled="disabled"
+      @click="$emit('buttonClick')"
     >
       <slot></slot>
     </button>
@@ -27,8 +28,11 @@ export default defineComponent({
     },
   },
   computed: {
-    componentClasses(): string {
-      return "is-" + this.type;
+    componentClasses(): Record<string, boolean> {
+      return {
+        ["is-" + this.type]: true,
+        "is-disabled": this.disabled,
+      };
     },
   },
 });

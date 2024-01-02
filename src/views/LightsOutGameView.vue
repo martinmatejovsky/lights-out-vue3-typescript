@@ -16,7 +16,10 @@
         <VueSelect name="colors" :options="colorsOptions" @select="updateColors"
           >Number of colors</VueSelect
         >
-        <VueButton type="submit" :disabled="!colors || !grid" @click="startGame"
+        <VueButton
+          type="submit"
+          :disabled="!colors || !grid"
+          @buttonClick="startGame"
           >Start game</VueButton
         >
       </div>
