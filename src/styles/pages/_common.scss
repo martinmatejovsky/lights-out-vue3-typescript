@@ -7,6 +7,10 @@ body {
   margin: 8px;
 }
 
+p {
+  @extend %components-stacking-margin;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
