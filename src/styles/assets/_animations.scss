@@ -8,6 +8,16 @@
   }
 }
 
+// SLIDE
+@keyframes slide {
+  0% {
+    transform:translateX(-25%);
+  }
+  100% {
+    transform:translateX(25%);
+  }
+}
+
 // FADE
 .fade-enter-active,
 .fade-leave-active {
