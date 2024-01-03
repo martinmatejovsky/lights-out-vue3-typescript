@@ -28,7 +28,7 @@
         <transition name="fade">
           <div v-if="state === gameStates.won" class="game-view-victory">
             <h2 class="heading-2">Congratulations!</h2>
-            <p>You won the game in {{ timeInMinutesAndSeconds }}.</p>
+            <p>You won the game in time {{ timeInMinutesAndSeconds }}.</p>
             <VueButton type="button" @click="clearGame">Play again</VueButton>
           </div>
         </transition>
