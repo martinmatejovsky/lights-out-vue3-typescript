@@ -6,6 +6,7 @@
     font-size: $font-size-small;
     font-weight: bold;
     cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
 
     &:disabled {
       opacity: 0.5;
@@ -17,6 +18,10 @@
     .vue-button-button {
       background-color: $color-button-background-default;
       color: $color-txt-default;
+
+        &:hover:not(:disabled) {
+            background-color: darken($color-button-background-default, 10%);
+        }
     }
   }
 
@@ -24,6 +29,10 @@
     .vue-button-button {
       background-color: $color-button-background-submit;
       color: $color-txt-inverted;
+
+      &:hover:not(:disabled) {
+          background-color: darken($color-button-background-submit, 6%);
+      }
     }
   }
 }

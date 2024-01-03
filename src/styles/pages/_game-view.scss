@@ -1,14 +1,14 @@
 .game-view {
-  padding: 30px 0;
+  padding: floor($element-spacing * 1.5) 0;
   user-select: none;
 
   .game-view-settings {
-    padding: 20px 0;
+    padding: $element-spacing 0;
   }
 
   .game-view-game-container {
     position: relative;
-    padding: 40px 0;
+    padding: ($element-spacing * 2) 0;
   }
 
   .game-view-victory {
@@ -30,15 +30,15 @@
 // =============================================================================
 @media (min-width: 760px) {
   .game-view {
-    padding: 60px 0;
+    padding: ($element-spacing * 2.5) 0;
 
     .game-view-settings {
-      padding: 40px 0;
+      padding: ($element-spacing * 2) 0;
     }
   }
 
   .game-view-game-container {
     position: relative;
-    padding: 60px 0;
+    padding: ($element-spacing * 3) 0;
   }
 }
