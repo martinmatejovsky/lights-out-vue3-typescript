@@ -3,21 +3,24 @@
     <label :for="`vue-select-${name}`" class="vue-select-label">
       <slot>Choose an option</slot>
     </label>
-    <select
-      :id="`vue-select-${name}`"
-      :name="`vue-select-${name}`"
-      class="vue-select-select"
-    >
-      <option
-        v-for="option in optionsSet"
-        :key="option.value"
-        :value="option.value"
-        :disabled="emptyStartingOption && option.value === ''"
-        :selected="emptyStartingOption && option.value === ''"
+    <div class="vue-select-select">
+      <select
+        :id="`vue-select-${name}`"
+        :name="`vue-select-${name}`"
+        class="vue-select-input"
       >
-        {{ option.text }}
-      </option>
-    </select>
+        <option
+          v-for="option in optionsSet"
+          :key="option.value"
+          :value="option.value"
+          :disabled="emptyStartingOption && option.value === ''"
+          :selected="emptyStartingOption && option.value === ''"
+        >
+          {{ option.text }}
+        </option>
+      </select>
+      <span class="focus"></span>
+    </div>
   </div>
 </template>
 

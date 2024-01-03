@@ -1,6 +1,6 @@
 <template>
   <div class="game-view">
-    <h1>Lights out</h1>
+    <h1 class="heading-1">Lights out</h1>
     <p>Click on cells in the field to turn them all into the same color.</p>
 
     <transition name="fade" mode="out-in">
@@ -9,12 +9,12 @@
         key="settings"
         class="game-view-settings"
       >
-        <h2>Select game parameters</h2>
+        <h2 class="heading-2">Select game parameters</h2>
         <VueSelect name="grid" :options="gridOptions" @select="updateGrid"
           >Size of a field</VueSelect
         >
         <VueSelect name="colors" :options="colorsOptions" @select="updateColors"
-          >Number of colors</VueSelect
+          >How many colors</VueSelect
         >
         <VueButton
           type="submit"
@@ -27,7 +27,7 @@
       <div v-else key="game" class="game-view-game-container">
         <transition name="fade">
           <div v-if="state === gameStates.won" class="game-view-victory">
-            <h2>Congratulations!</h2>
+            <h2 class="heading-2">Congratulations!</h2>
             <p>You won the game in {{ timeInMinutesAndSeconds }}.</p>
             <VueButton type="button" @click="clearGame">Play again</VueButton>
           </div>

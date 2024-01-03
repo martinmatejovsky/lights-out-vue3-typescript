@@ -1,4 +1,5 @@
 html {
+  box-sizing: border-box;
   background: $color-background-inverted;
   animation: pulse 10s infinite;
 }
@@ -17,4 +18,12 @@ p {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: $color-txt-default;
+}
+
+.heading-1 {
+  color: $color-heading-primary;
+}
+
+.heading-2 {
+  color: $color-heading-secondary;
 }
