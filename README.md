@@ -1,4 +1,4 @@
-# Vue3 uceni
+# Lights Out
 
 ## Project setup
 ```
