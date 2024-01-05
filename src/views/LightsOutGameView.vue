@@ -5,7 +5,7 @@
 
     <transition name="fade" mode="out-in">
       <div
-        v-if="state === gameStates.new"
+        v-if="state === gameStatesEnum.new"
         key="settings"
         class="game-view-settings"
       >
@@ -26,7 +26,7 @@
 
       <div v-else key="game" class="game-view-game-container">
         <transition name="fade">
-          <div v-if="state === gameStates.won" class="game-view-victory">
+          <div v-if="state === gameStatesEnum.won" class="game-view-victory">
             <h2 class="heading-2">Congratulations!</h2>
             <p>You won the game in time {{ timeInMinutesAndSeconds }}.</p>
             <VueButton type="button" @click="clearGame">Play again</VueButton>
@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onBeforeMount, ref, computed, watch } from "vue";
 import LightsOut from "../components/LightsOut.vue";
 import VueButton from "@/components/VueButton.vue";
 import VueSelect from "@/components/VueSelect.vue";
@@ -53,91 +53,104 @@ import { Range } from "@/utils/classes";
 
 export default defineComponent({
   name: "LightsOutView",
-  computed: {
-    timeInMinutesAndSeconds(): string {
-      const minutes = Math.floor(this.gameTime / 60);
-      const seconds = (this.gameTime % 60).toString().padStart(2, "0");
-
-      return `${minutes}:${seconds}`;
-    },
-    gameStates() {
-      return gameStates;
-    },
-  },
   components: {
     VueSelect,
     VueButton,
     LightsOut,
   },
-  data() {
-    return {
-      grid: null as number | null,
-      colors: null as number | null,
-      gridOptions: [] as SelectOptions[],
-      colorsOptions: [] as SelectOptions[],
-      state: gameStates.new,
-      timer: null as unknown as number,
-      gameTime: 0 as number,
-    };
-  },
-  created() {
-    this.generateOptionsProps();
-    this.generateColorsOptions();
-  },
-  watch: {
-    state(newValue: gameStates) {
-      if (newValue === gameStates.inProgress) {
-        this.startTimer();
-      } else if (newValue === gameStates.new) {
-        this.gameTime = 0;
-      } else if (newValue === gameStates.won) {
-        clearInterval(this.timer);
-      }
-    },
-  },
-  methods: {
-    startTimer(): void {
-      this.timer = setInterval(() => {
-        this.gameTime++;
-      }, 1000);
-    },
-    clearGame(): void {
-      this.grid = null;
-      this.colors = null;
-      this.state = gameStates.new;
-    },
-    setGameStateWin(): void {
-      this.state = gameStates.won;
-    },
-    generateOptionsProps(): void {
+  setup() {
+    const grid = ref<number | null>(null);
+    const colors = ref<number | null>(null);
+    const gridOptions = ref<SelectOptions[]>([]);
+    const colorsOptions = ref<SelectOptions[]>([]);
+    const state = ref<gameStates>(gameStates.new);
+    const gameStatesEnum = gameStates;
+    const timer = ref<number | undefined>(undefined);
+    const gameTime = ref<number>(0);
+
+    // methods
+    const generateOptionsProps = (): void => {
       const gridOptionsRange = new Range(3, 10);
       for (
         let i: number = gridOptionsRange.min;
         i <= gridOptionsRange.max;
         i++
       ) {
-        this.gridOptions.push({ value: i, text: i.toString() });
+        gridOptions.value.push({ value: i, text: i.toString() });
       }
-    },
-    generateColorsOptions(): void {
-      const colorOptionsRange = new Range(2, 4);
+    };
+    const generateColorsOptions = (): void => {
+      const colorsOptionsRange = new Range(2, 5);
       for (
-        let i: number = colorOptionsRange.min;
-        i <= colorOptionsRange.max;
+        let i: number = colorsOptionsRange.min;
+        i <= colorsOptionsRange.max;
         i++
       ) {
-        this.colorsOptions.push({ value: i, text: i.toString() });
+        colorsOptions.value.push({ value: i, text: i.toString() });
       }
-    },
-    updateGrid(value: number): void {
-      this.grid = Number(value);
-    },
-    updateColors(value: number): void {
-      this.colors = Number(value);
-    },
-    startGame(): void {
-      this.state = gameStates.inProgress;
-    },
+    };
+    const startGame = (): void => {
+      state.value = gameStates.inProgress;
+    };
+    const clearGame = (): void => {
+      grid.value = null;
+      colors.value = null;
+      state.value = gameStates.new;
+    };
+    const updateGrid = (value: number): void => {
+      grid.value = Number(value);
+    };
+    const updateColors = (value: number): void => {
+      colors.value = Number(value);
+    };
+    const setGameStateWin = (): void => {
+      state.value = gameStates.won;
+    };
+    const startTimer = (): void => {
+      timer.value = setInterval(() => {
+        gameTime.value++;
+      }, 1000);
+    };
+
+    // watch
+    watch(state, (newValue) => {
+      if (newValue === gameStates.inProgress) {
+        startTimer();
+      } else {
+        clearInterval(timer.value);
+      }
+    });
+
+    // computed
+    const timeInMinutesAndSeconds = computed((): string => {
+      const minutes = Math.floor(gameTime.value / 60);
+      const seconds = (gameTime.value % 60).toString().padStart(2, "0");
+
+      return `${minutes}:${seconds}`;
+    });
+
+    onBeforeMount(() => {
+      generateOptionsProps();
+      generateColorsOptions();
+    });
+
+    return {
+      grid,
+      colors,
+      gridOptions,
+      colorsOptions,
+      state,
+      gameStatesEnum,
+      gameTime,
+      startGame,
+      clearGame,
+      updateGrid,
+      updateColors,
+      setGameStateWin,
+      timeInMinutesAndSeconds,
+    };
   },
+  watch: {},
+  methods: {},
 });
 </script>
