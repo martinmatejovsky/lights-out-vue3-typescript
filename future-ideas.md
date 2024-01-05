@@ -1,5 +1,4 @@
 - switching colors of squares to grayscale or color
-- adding a timer
-- checkbox to turn off helping numbers
 - button :one step back (idea: do not store whole state object, but just index of clicked square.Then via function imitating inverted click on square, we can go back)
-- nicer background color on <body>, with effect of waves 
+- checkbox to turn off helping numbers
+- adding a timer

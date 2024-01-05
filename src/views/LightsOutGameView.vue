@@ -37,6 +37,9 @@
           :colors="colors"
           @lightsOutWin="setGameStateWin"
         />
+        <div class="game-view-controls">
+          <VueButton type="button" @click="quitGame">Quit game</VueButton>
+        </div>
       </div>
     </transition>
   </div>
@@ -111,6 +114,10 @@ export default defineComponent({
         gameTime.value++;
       }, 1000);
     };
+    const quitGame = (): void => {
+      state.value = gameStates.new;
+      clearGame();
+    };
 
     // watch
     watch(state, (newValue) => {
@@ -147,6 +154,7 @@ export default defineComponent({
       updateGrid,
       updateColors,
       setGameStateWin,
+      quitGame,
       timeInMinutesAndSeconds,
     };
   },
