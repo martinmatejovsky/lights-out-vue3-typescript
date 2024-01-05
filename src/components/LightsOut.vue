@@ -4,27 +4,35 @@
       <div
         class="lights-out-row"
         v-for="(gridRow, gridIndex) in gameGrid"
-        :key="'row' + gridIndex"
+        :key="`row${gridIndex}`"
       >
         <div
           v-for="(gridCell, cellIndex) in gridRow"
-          :key="'cell' + cellIndex"
+          :key="`cell${cellIndex}`"
           :class="['lights-out-cell', 'is-cell-color-' + gridCell]"
-          @click="cellClick(gridIndex, cellIndex)"
+          @click="cellClick({ row: gridIndex, column: cellIndex })"
         >
           <div class="lights-out-cell-mark">{{ gridCell }}</div>
         </div>
       </div>
+    </div>
+    <div class="lights-out-controls">
+      <VueButton type="button">Step back</VueButton>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
+import VueButton from "@/components/VueButton.vue";
 import { Range } from "@/utils/classes";
+import { CellCoordinates } from "@/utils/types";
 
 export default defineComponent({
   name: "LightsOut",
+  components: {
+    VueButton,
+  },
   props: {
     grid: {
       required: true,
@@ -70,21 +78,21 @@ export default defineComponent({
         gameGrid.value.length * gameGrid.value.length;
       for (let i = 0; i < amountOfRandomClicks; i++) {
         const randomRow = Math.floor(Math.random() * gameGrid.value.length);
-        const randomCell = Math.floor(
+        const randomColumn = Math.floor(
           Math.random() * gameGrid.value[randomRow].length
         );
 
-        toggleCell(randomRow, randomCell);
+        toggleCell({ row: randomRow, column: randomColumn });
       }
     };
 
-    const toggleCell = (row: number, cell: number): void => {
+    const toggleCell = ({ row, column }: CellCoordinates): void => {
       const neighborsCross = [
-        [row - 1, cell],
-        [row + 1, cell],
-        [row, cell - 1],
-        [row, cell + 1],
-        [row, cell],
+        [row - 1, column],
+        [row + 1, column],
+        [row, column - 1],
+        [row, column + 1],
+        [row, column],
       ];
 
       for (const [neighborRow, neighborCell] of neighborsCross) {
@@ -116,8 +124,8 @@ export default defineComponent({
 
       return true;
     };
-    const cellClick = (row: number, cell: number): void => {
-      toggleCell(row, cell);
+    const cellClick = (coordinates: CellCoordinates): void => {
+      toggleCell(coordinates);
       if (evaluateWinCondition()) {
         emitWin();
       }
