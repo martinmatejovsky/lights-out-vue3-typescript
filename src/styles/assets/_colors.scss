@@ -4,10 +4,11 @@ $color-gray: #777;
 $color-white: #fff;
 $color-primary: #0f9a69;
 $color-secondary: #90e0bd;
+$color-tertiary: #a1e9f6;
 
 // USAGE
 $color-background-default: $color-black;
-$color-background-complementary: $color-secondary;
+$color-background-complementary: rgba($color-tertiary, 15%);
 $color-background-inverted: $color-white;
 
 $color-select-border: $color-gray;
