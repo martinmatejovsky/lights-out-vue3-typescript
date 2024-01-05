@@ -7,3 +7,11 @@
     }
   }
 }
+
+@mixin stackingMargin($marginAmplifier: 1) {
+  margin-bottom: $element-spacing * $marginAmplifier;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}

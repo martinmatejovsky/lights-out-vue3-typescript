@@ -1,7 +1,9 @@
 <template>
   <div class="game-view">
-    <h1 class="heading-1">Lights out</h1>
-    <p>Click on cells in the field to turn them all into the same color.</p>
+    <div class="game-view-header">
+      <h1 class="heading-1">Lights out</h1>
+      <p>Click on cells in the field to turn them all into the same color.</p>
+    </div>
 
     <transition name="fade" mode="out-in">
       <div

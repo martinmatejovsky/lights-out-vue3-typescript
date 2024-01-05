@@ -9,7 +9,7 @@ body {
 }
 
 p {
-  @extend %components-stacking-margin;
+  @include stackingMargin();
 }
 
 #app {

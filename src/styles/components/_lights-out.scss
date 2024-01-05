@@ -8,7 +8,7 @@ $lights-out-cell-box-shadow: 0px 0px 2px #444, 2px 2px 10px #22222259, inset 3px
   display: flex;
   justify-content: center;
   max-width: 600px;
-  @extend %components-stacking-margin;
+  @include stackingMargin(2);
   margin-right: auto;
   margin-left: auto;
 

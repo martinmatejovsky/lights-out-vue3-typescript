@@ -1,5 +1,5 @@
 .c-vue-select {
-  @extend %components-stacking-margin;
+  @include stackingMargin();
   display: flex;
   justify-content: center;
   align-items: center;

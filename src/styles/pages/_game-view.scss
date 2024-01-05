@@ -2,13 +2,14 @@
   padding: floor($element-spacing * 1.5) 0;
   user-select: none;
 
-  .game-view-settings {
-    padding: $element-spacing 0;
+  .game-view-header {
+    @include stackingMargin(2);
   }
+
+  .game-view-settings {}
 
   .game-view-game-container {
     position: relative;
-    padding: ($element-spacing * 2) 0;
   }
 
   .game-view-victory {
@@ -29,16 +30,7 @@
 // BREAKPOINTS
 // =============================================================================
 @media (min-width: 760px) {
-  .game-view {
-    padding: ($element-spacing * 2.5) 0;
-
-    .game-view-settings {
-      padding: ($element-spacing * 2) 0;
-    }
-  }
-
-  .game-view-game-container {
-    position: relative;
-    padding: ($element-spacing * 3) 0;
+  .game-view-header {
+    @include stackingMargin(4);
   }
 }
