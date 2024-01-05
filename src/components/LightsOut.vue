@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="lights-out-controls">
-      <VueButton type="button">Step back</VueButton>
+      <VueButton type="button" @click="returnLastStep">Step back</VueButton>
     </div>
   </div>
 </template>
@@ -26,7 +26,7 @@
 import { defineComponent, ref, onMounted } from "vue";
 import VueButton from "@/components/VueButton.vue";
 import { Range } from "@/utils/classes";
-import { CellCoordinates } from "@/utils/types";
+import { CellCoordinates, SwitchDirection } from "@/utils/types";
 
 export default defineComponent({
   name: "LightsOut",
@@ -46,6 +46,8 @@ export default defineComponent({
   setup(props, context) {
     const gameGrid = ref<number[][]>([]);
     const colorRange = ref(new Range(1, props.colors));
+    const clickingHistory = ref<CellCoordinates[]>([]);
+    // const clickingHistoryLength = computed(() => clickingHistory.value.length);
 
     /**
      * @name createGridObject
@@ -82,11 +84,14 @@ export default defineComponent({
           Math.random() * gameGrid.value[randomRow].length
         );
 
-        toggleCell({ row: randomRow, column: randomColumn });
+        toggleCell({ row: randomRow, column: randomColumn }, "forward");
       }
     };
 
-    const toggleCell = ({ row, column }: CellCoordinates): void => {
+    const toggleCell = (
+      { row, column }: CellCoordinates,
+      direction: SwitchDirection
+    ): void => {
       const neighborsCross = [
         [row - 1, column],
         [row + 1, column],
@@ -95,19 +100,47 @@ export default defineComponent({
         [row, column],
       ];
 
-      for (const [neighborRow, neighborCell] of neighborsCross) {
+      for (const [neighborRow, neighborColumn] of neighborsCross) {
         if (
           neighborRow >= 0 &&
           neighborRow < gameGrid.value.length &&
-          neighborCell >= 0 &&
-          neighborCell < gameGrid.value[neighborRow].length
+          neighborColumn >= 0 &&
+          neighborColumn < gameGrid.value[neighborRow].length
         ) {
-          if (gameGrid.value[neighborRow][neighborCell] === props.colors) {
-            gameGrid.value[neighborRow][neighborCell] = 1;
+          toggleCellColor(
+            { row: neighborRow, column: neighborColumn } as CellCoordinates,
+            direction as SwitchDirection
+          );
+          if (gameGrid.value[neighborRow][neighborColumn] === props.colors) {
+            gameGrid.value[neighborRow][neighborColumn] = 1;
           } else {
-            gameGrid.value[neighborRow][neighborCell] += 1;
+            gameGrid.value[neighborRow][neighborColumn] += 1;
           }
         }
+      }
+    };
+    const toggleCellColor = (
+      { row, column }: CellCoordinates,
+      direction: SwitchDirection
+    ): void => {
+      if (direction === "forward") {
+        if (gameGrid.value[row][column] === props.colors) {
+          gameGrid.value[row][column] = 1;
+        } else {
+          gameGrid.value[row][column] += 1;
+        }
+      } else if (direction === "backward") {
+        if (gameGrid.value[row][column] === 1) {
+          gameGrid.value[row][column] = props.colors;
+        } else {
+          gameGrid.value[row][column] -= 1;
+        }
+      }
+    };
+    const returnLastStep = (): void => {
+      const lastClick = clickingHistory.value.pop();
+      if (lastClick) {
+        toggleCell(lastClick, "backward");
       }
     };
 
@@ -125,7 +158,8 @@ export default defineComponent({
       return true;
     };
     const cellClick = (coordinates: CellCoordinates): void => {
-      toggleCell(coordinates);
+      toggleCell(coordinates, "forward");
+      clickingHistory.value.push(coordinates);
       if (evaluateWinCondition()) {
         emitWin();
       }
@@ -143,7 +177,12 @@ export default defineComponent({
       }
     });
 
-    return { gameGrid, colorRange, cellClick };
+    return {
+      gameGrid,
+      colorRange,
+      cellClick,
+      returnLastStep,
+    };
   },
 });
 </script>
