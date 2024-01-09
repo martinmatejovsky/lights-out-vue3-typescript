@@ -37,23 +37,21 @@
         <LightsOut
           :grid="grid"
           :colors="colors"
-          @lightsOutWin="setGameStateWin"
+          @gameStateChanged="setGameState"
         />
-        <div class="game-view-controls">
-          <VueButton type="button" @click="quitGame">Quit game</VueButton>
-        </div>
+        <div class="game-view-controls"></div>
       </div>
     </transition>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, ref, computed, watch } from "vue";
+import { computed, defineComponent, onBeforeMount, ref, watch } from "vue";
 import LightsOut from "../components/LightsOut.vue";
 import VueButton from "@/components/VueButton.vue";
 import VueSelect from "@/components/VueSelect.vue";
-import { SelectOptions } from "@/utils/types";
-import { gameStates } from "@/utils/constants";
+import { GameState, SelectOptions } from "@/utils/types";
+import { GameStates } from "@/utils/constants";
 import { Range } from "@/utils/classes";
 
 export default defineComponent({
@@ -68,8 +66,8 @@ export default defineComponent({
     const colors = ref<number | null>(null);
     const gridOptions = ref<SelectOptions[]>([]);
     const colorsOptions = ref<SelectOptions[]>([]);
-    const state = ref<gameStates>(gameStates.new);
-    const gameStatesEnum = gameStates;
+    const state = ref<GameStates>(GameStates.new);
+    const gameStatesEnum = GameStates;
     const timer = ref<number | undefined>(undefined);
     const gameTime = ref<number>(0);
 
@@ -95,12 +93,12 @@ export default defineComponent({
       }
     };
     const startGame = (): void => {
-      state.value = gameStates.inProgress;
+      state.value = GameStates.inProgress;
     };
     const clearGame = (): void => {
       grid.value = null;
       colors.value = null;
-      state.value = gameStates.new;
+      state.value = GameStates.new;
     };
     const updateGrid = (value: number): void => {
       grid.value = Number(value);
@@ -108,22 +106,21 @@ export default defineComponent({
     const updateColors = (value: number): void => {
       colors.value = Number(value);
     };
-    const setGameStateWin = (): void => {
-      state.value = gameStates.won;
+    const setGameState = (newState: GameState): void => {
+      state.value = GameStates[newState];
+      if (newState === GameStates.new) {
+        clearGame();
+      }
     };
     const startTimer = (): void => {
       timer.value = setInterval(() => {
         gameTime.value++;
       }, 1000);
     };
-    const quitGame = (): void => {
-      state.value = gameStates.new;
-      clearGame();
-    };
 
     // watch
     watch(state, (newValue) => {
-      if (newValue === gameStates.inProgress) {
+      if (newValue === GameStates.inProgress) {
         startTimer();
       } else {
         clearInterval(timer.value);
@@ -155,8 +152,7 @@ export default defineComponent({
       clearGame,
       updateGrid,
       updateColors,
-      setGameStateWin,
-      quitGame,
+      setGameState,
       timeInMinutesAndSeconds,
     };
   },

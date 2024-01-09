@@ -23,6 +23,7 @@
         :disabled="historyIsEmpty"
         >Step back</VueButton
       >
+      <VueButton type="button" @click="quitGame">Quit game</VueButton>
     </div>
   </div>
 </template>
@@ -31,7 +32,8 @@
 import { defineComponent, ref, onMounted } from "vue";
 import VueButton from "@/components/VueButton.vue";
 import { Range } from "@/utils/classes";
-import { CellCoordinates, SwitchDirection } from "@/utils/types";
+import { CellCoordinates, GameState, SwitchDirection } from "@/utils/types";
+import { GameStates } from "@/utils/constants";
 
 export default defineComponent({
   name: "LightsOut",
@@ -163,11 +165,14 @@ export default defineComponent({
       clickingHistory.value.push(coordinates);
       toggleCell(coordinates, "forward");
       if (evaluateWinCondition()) {
-        emitWin();
+        emitGameStateChange(GameStates.won);
       }
     };
-    const emitWin = (): void => {
-      context.emit("lightsOutWin");
+    const emitGameStateChange = (state: GameState): void => {
+      context.emit("gameStateChanged", state);
+    };
+    const quitGame = (): void => {
+      emitGameStateChange(GameStates.new);
     };
 
     onMounted(() => {
@@ -184,6 +189,7 @@ export default defineComponent({
       colorRange,
       clickingHistory,
       historyIsEmpty,
+      quitGame,
       cellClick,
       returnLastStep,
     };

@@ -6,8 +6,8 @@ export const colorsLightsOut: { value: string; text: string }[] = [
   { value: "#800080", text: "Purple" },
 ];
 
-export enum gameStates {
-  new,
-  inProgress,
-  won,
+export enum GameStates {
+  new = "new",
+  inProgress = "inProgress",
+  won = "won",
 }

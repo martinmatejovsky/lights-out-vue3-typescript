@@ -2,6 +2,7 @@
   <div :class="['c-vue-button', componentClasses]">
     <button
       class="vue-button-button"
+      :type="type"
       :disabled="disabled"
       @click="$emit('buttonClick')"
     >
