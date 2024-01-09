@@ -23,7 +23,11 @@
     bottom: 0;
     left: 0;
     background-color: rgba($color-background-default, 0.8);
-    color: $color-txt-inverted;
+
+    &,
+    .heading-2 {
+      color: $color-txt-inverted;
+    }
   }
 }
 
