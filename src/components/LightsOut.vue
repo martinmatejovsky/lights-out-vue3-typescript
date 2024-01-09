@@ -17,7 +17,12 @@
       </div>
     </div>
     <div class="lights-out-controls">
-      <VueButton type="button" @click="returnLastStep">Step back</VueButton>
+      <VueButton
+        type="button"
+        @click="returnLastStep"
+        :disabled="historyIsEmpty"
+        >Step back</VueButton
+      >
     </div>
   </div>
 </template>
@@ -47,7 +52,7 @@ export default defineComponent({
     const gameGrid = ref<number[][]>([]);
     const colorRange = ref(new Range(1, props.colors));
     const clickingHistory = ref<CellCoordinates[]>([]);
-    // const clickingHistoryLength = computed(() => clickingHistory.value.length);
+    let historyIsEmpty = ref(true);
 
     /**
      * @name createGridObject
@@ -111,13 +116,10 @@ export default defineComponent({
             { row: neighborRow, column: neighborColumn } as CellCoordinates,
             direction as SwitchDirection
           );
-          if (gameGrid.value[neighborRow][neighborColumn] === props.colors) {
-            gameGrid.value[neighborRow][neighborColumn] = 1;
-          } else {
-            gameGrid.value[neighborRow][neighborColumn] += 1;
-          }
         }
       }
+
+      historyIsEmpty.value = clickingHistory.value.length === 0;
     };
     const toggleCellColor = (
       { row, column }: CellCoordinates,
@@ -158,8 +160,8 @@ export default defineComponent({
       return true;
     };
     const cellClick = (coordinates: CellCoordinates): void => {
-      toggleCell(coordinates, "forward");
       clickingHistory.value.push(coordinates);
+      toggleCell(coordinates, "forward");
       if (evaluateWinCondition()) {
         emitWin();
       }
@@ -180,6 +182,8 @@ export default defineComponent({
     return {
       gameGrid,
       colorRange,
+      clickingHistory,
+      historyIsEmpty,
       cellClick,
       returnLastStep,
     };
