@@ -83,7 +83,7 @@ export default defineComponent({
       }
     };
     const generateColorsOptions = (): void => {
-      const colorsOptionsRange = new Range(2, 5);
+      const colorsOptionsRange = new Range(2, 4);
       for (
         let i: number = colorsOptionsRange.min;
         i <= colorsOptionsRange.max;
