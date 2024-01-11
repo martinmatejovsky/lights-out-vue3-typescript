@@ -14,7 +14,7 @@
     }
   }
 
-  &.is-button {
+  &.is-type-button {
     .vue-button-button {
       background-color: $color-button-background-default;
       color: $color-txt-default;
@@ -25,13 +25,24 @@
     }
   }
 
-  &.is-submit {
+  &.is-type-submit {
     .vue-button-button {
       background-color: $color-button-background-submit;
       color: $color-txt-inverted;
 
       &:hover:not(:disabled) {
           background-color: darken($color-button-background-submit, 6%);
+      }
+    }
+  }
+
+  &.is-cancel {
+    .vue-button-button {
+      background-color: $color-button-background-cancel;
+      color: $color-txt-inverted;
+
+      &:hover:not(:disabled) {
+          background-color: darken($color-button-background-cancel, 6%);
       }
     }
   }

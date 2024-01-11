@@ -23,7 +23,9 @@
         :disabled="historyIsEmpty"
         >Step back</VueButton
       >
-      <VueButton type="button" @click="quitGame">Quit game</VueButton>
+      <VueButton type="button" class="is-cancel" @click="quitGame"
+        >Quit game</VueButton
+      >
     </div>
   </div>
 </template>

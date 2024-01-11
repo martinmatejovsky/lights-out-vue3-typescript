@@ -31,7 +31,7 @@ export default defineComponent({
   computed: {
     componentClasses(): Record<string, boolean> {
       return {
-        ["is-" + this.type]: true,
+        ["is-type-" + this.type]: true,
         "is-disabled": this.disabled,
       };
     },

@@ -5,6 +5,7 @@ $color-white: #fff;
 $color-primary: #0f9a69;
 $color-secondary: #90e0bd;
 $color-tertiary: #a1e9f6;
+$color-error: #cc3232;
 
 // USAGE
 $color-background-default: $color-black;
@@ -21,5 +22,6 @@ $color-txt-inverted: $color-white;
 
 $color-button-background-default: $color-secondary;
 $color-button-background-submit: $color-primary;
+$color-button-background-cancel: $color-error;
 
 $color-element-focus: $color-primary;
