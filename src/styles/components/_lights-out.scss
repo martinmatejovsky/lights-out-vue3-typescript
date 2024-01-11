@@ -1,8 +1,6 @@
 $lights-out-cell-size: 60px;
 $lights-out-cell-gap: 8px;
-$lights-out-max-color-range: 4; // TODO: max range should be connected to max range in LightsOutGameView.vue
-$lights-out-marker-box-shadow: 0 0 22px 20px rgba(255,255,255,0.5);
-$lights-out-cell-box-shadow: 0px 0px 2px #444, 2px 2px 10px #22222259, inset 3px 3px 10px #8d8d8d, inset -3px -3px 10px #222;
+$lights-out-max-color-range: 4; // TODO: max range should be connected to max range in LightsOutGameView.vue. It seems that it is not possible to use Vue props in scss.
 
 .c-lights-out {
   justify-content: center;
@@ -32,17 +30,13 @@ $lights-out-cell-box-shadow: 0px 0px 2px #444, 2px 2px 10px #22222259, inset 3px
     aspect-ratio: 1/1;
     border: none;
     border-radius: 10px;
-    box-shadow: $lights-out-cell-box-shadow;
+    background-color: $color-background-inverted;
     cursor: pointer;
     transition: all 0.1s ease-in-out;
   }
 
   .lights-out-cell-mark {
     border-radius: 50%;
-    background: rgba(255,255,255,0.5);
-    -webkit-box-shadow: $lights-out-marker-box-shadow;
-    -moz-box-shadow: $lights-out-marker-box-shadow;
-    box-shadow: $lights-out-marker-box-shadow;
     font-size: $font-size-medium;
   }
 
@@ -55,21 +49,15 @@ $lights-out-cell-box-shadow: 0px 0px 2px #444, 2px 2px 10px #22222259, inset 3px
   // TODO: does exist a solution to use Vue props to generate this?
   //  Could not find ny solution what so ever. Problem is that scss is compiled before component is rendered.
   &.is-greyscale-2 {
-    .lights-out-cell {
-      @include greyscale-range(2);
-    }
+    @include greyscale-range(2);
   }
 
   &.is-greyscale-3 {
-    .lights-out-cell {
-      @include greyscale-range(3);
-    }
+    @include greyscale-range(3);
   }
 
   &.is-greyscale-4 {
-    .lights-out-cell {
-      @include greyscale-range(4);
-    }
+    @include greyscale-range(4);
   }
 }
 

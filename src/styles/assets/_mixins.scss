@@ -1,9 +1,9 @@
 @mixin greyscale-range($lights-out-max-color-range) {
   @for $i from 1 through $lights-out-max-color-range {
-    &.is-cell-color-#{$i} {
+    .lights-out-cell.is-cell-color-#{$i} {
       $color-value: round(255 - (255 / ($lights-out-max-color-range - 1) * ($i - 1)));
       $hex-color: rgb($color-value, $color-value, $color-value);
-      background-color: $hex-color;
+      background: radial-gradient(ellipse at center, darken($color-white, 10%) 0, $hex-color 70%);
     }
   }
 }
