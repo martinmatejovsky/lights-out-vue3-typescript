@@ -27,6 +27,11 @@
       </div>
 
       <div v-else key="game" class="game-view-game-container">
+        <LightsOut
+          :grid="grid"
+          :colors="colors"
+          @gameStateChanged="setGameState"
+        />
         <transition name="fade">
           <div v-if="state === gameStatesEnum.won" class="game-view-victory">
             <h2 class="heading-2">Congratulations!</h2>
@@ -34,12 +39,6 @@
             <VueButton type="button" @click="clearGame">Play again</VueButton>
           </div>
         </transition>
-        <LightsOut
-          :grid="grid"
-          :colors="colors"
-          @gameStateChanged="setGameState"
-        />
-        <div class="game-view-controls"></div>
       </div>
     </transition>
   </div>

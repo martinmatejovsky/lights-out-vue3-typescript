@@ -1,6 +1,8 @@
 $lights-out-cell-size: 60px;
 $lights-out-cell-gap: 8px;
 $lights-out-max-color-range: 4; // TODO: max range should be connected to max range in LightsOutGameView.vue. It seems that it is not possible to use Vue props in scss.
+$lights-out-cell-shadow: 3px 2px 2px 1px rgba(0, 0, 0, 0.24);
+$lights-out-cell-shadow-pressed: 1px 1px 2px 1px rgba(0, 0, 0, 0.24);
 
 .c-lights-out {
   justify-content: center;
@@ -30,9 +32,15 @@ $lights-out-max-color-range: 4; // TODO: max range should be connected to max ra
     aspect-ratio: 1/1;
     border: none;
     border-radius: 10px;
-    background-color: $color-background-inverted;
     cursor: pointer;
+    box-shadow: $lights-out-cell-shadow;
     transition: all 0.1s ease-in-out;
+
+    // on :active make effect as if pressed down
+    &:active {
+      transform: translateY(1px);
+      box-shadow: $lights-out-cell-shadow-pressed;
+    }
   }
 
   .lights-out-cell-mark {
