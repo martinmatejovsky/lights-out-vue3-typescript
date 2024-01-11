@@ -108,9 +108,7 @@ export default defineComponent({
     };
     const setGameState = (newState: GameState): void => {
       state.value = GameStates[newState];
-      if (newState === GameStates.new) {
-        clearGame();
-      }
+      if (newState === GameStates.new) clearGame();
     };
     const startTimer = (): void => {
       timer.value = setInterval(() => {
@@ -124,6 +122,8 @@ export default defineComponent({
         startTimer();
       } else {
         clearInterval(timer.value);
+
+        if (newValue === GameStates.new) gameTime.value = 0;
       }
     });
 
@@ -156,7 +156,5 @@ export default defineComponent({
       timeInMinutesAndSeconds,
     };
   },
-  watch: {},
-  methods: {},
 });
 </script>
